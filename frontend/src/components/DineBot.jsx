@@ -32,9 +32,44 @@ export default function DineBot() {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
+  // Speech Recognition Callbacks with Auto-Send on Finish
+  const handleSpeechResult = useCallback((text) => {
+    setInput(text);
+  }, []);
+
+  const handleSpeechEnd = useCallback((finalText) => {
+    const textToSend = (finalText || input).trim();
+    if (textToSend) {
+      sendMessage(textToSend);
+      setInput('');
+      showToast(`🎙️ Voice heard: "${textToSend}"`, 'info');
+    }
+  }, [input, sendMessage, showToast]);
+
+  const handleSpeechError = useCallback((err) => {
+    if (err === 'not-allowed' || err === 'permission-denied') {
+      showToast('⚠️ Microphone blocked! Please click the 🔒 icon in browser address bar and allow Microphone.', 'error');
+    } else if (err === 'no-speech') {
+      showToast('🎙️ No voice detected. Please click the mic and speak clearly.', 'info');
+    } else if (err === 'network') {
+      showToast('⚠️ Speech recognition network issue. Please check your internet.', 'error');
+    } else if (err === 'not-supported') {
+      showToast('Voice speech recognition is not supported in this browser. Please use Chrome or Edge.', 'info');
+    }
+  }, [showToast]);
+
   // Voice Speech Recognition Hook
-  const { listening, start: startVoice, stop: stopVoice, supported: speechSupported, transcript, setTranscript } = useSpeechRecognition();
-  const lastTranscriptRef = useRef('');
+  const {
+    listening,
+    start: startVoice,
+    stop: stopVoice,
+    supported: speechSupported,
+    setTranscript,
+  } = useSpeechRecognition({
+    onResult: handleSpeechResult,
+    onEnd: handleSpeechEnd,
+    onError: handleSpeechError,
+  });
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -57,25 +92,26 @@ export default function DineBot() {
     return () => window.removeEventListener('open-zestro-concierge', handleGlobalOpen);
   }, [dispatch, sendMessage]);
 
-  // Voice input handling
-  useEffect(() => {
-    if (transcript && transcript !== lastTranscriptRef.current) {
-      lastTranscriptRef.current = transcript;
-      setInput(transcript);
-    }
-  }, [transcript]);
-
-  // Voice speech synthesis reply
+  // Voice speech synthesis reply (Speaks out loud with audio)
   const speakResponse = useCallback((text) => {
-    if (!soundEnabled || !window.speechSynthesis) return;
+    if (!soundEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
     try {
       window.speechSynthesis.cancel();
-      // Clean emoji and take first 2 sentences for pleasant audio
-      const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+      window.speechSynthesis.resume();
+
+      // Clean emojis and symbols for pleasant audio speech
+      const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
+      if (!cleanText) return;
+
       const firstSentence = cleanText.split('.')[0] || cleanText;
       const utterance = new SpeechSynthesisUtterance(firstSentence);
-      utterance.rate = 1.05;
-      utterance.lang = 'en-IN';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.05;
+
+      const voices = window.speechSynthesis.getVoices() || [];
+      const indianVoice = voices.find(v => v.lang === 'en-IN' || v.lang === 'ta-IN') || voices.find(v => v.lang.startsWith('en'));
+      if (indianVoice) utterance.voice = indianVoice;
+
       window.speechSynthesis.speak(utterance);
     } catch {
       // ignore
@@ -98,24 +134,33 @@ export default function DineBot() {
     sendMessage(input);
     setInput('');
     setTranscript('');
-    lastTranscriptRef.current = '';
     if (listening) stopVoice();
   };
 
   const handleMicToggle = () => {
     if (listening) {
+      // Tapped while speaking -> stop and send what was captured
       stopVoice();
-      if (input.trim()) {
-        handleSend();
+      const textToSend = input.trim();
+      if (textToSend) {
+        sendMessage(textToSend);
+        setInput('');
+        setTranscript('');
       }
     } else {
       if (speechSupported) {
         setInput('');
         setTranscript('');
-        lastTranscriptRef.current = '';
+        // Prime speech synthesis within user click gesture
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          try {
+            window.speechSynthesis.resume();
+          } catch {}
+        }
         startVoice();
+        showToast('🎙️ Listening... Speak your order or craving now!', 'info');
       } else {
-        showToast('Voice speech recognition is not supported in this browser.', 'info');
+        showToast('Voice speech recognition is not supported in this browser. Please use Chrome or Edge.', 'info');
       }
     }
   };
