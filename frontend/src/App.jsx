@@ -80,8 +80,10 @@ export default function App() {
   const isCustomerPortal = location.pathname.startsWith('/customer');
   const isHomePage = location.pathname === '/';
 
-  // HIDE top consumer icons, navbar, bottom nav, and chatbot when ANY user is in their portal
+  // HIDE top consumer icons, navbar, and bottom nav when in customer portal or role dashboards
   const showCustomerChrome = !isAdminDashboard && !isChefDashboard && !isOwnerDashboard && !isDeliveryDashboard && !isCustomerPortal && !isAuthPage;
+  // KEEP DineBot visible everywhere for customers (both logged-in customer portal and public pages)
+  const showDineBot = !isAdminDashboard && !isChefDashboard && !isOwnerDashboard && !isDeliveryDashboard && !isAuthPage;
 
   return (
     <LoginModalProvider>
@@ -185,7 +187,7 @@ export default function App() {
             </Routes>
           </ErrorBoundary>
         </main>
-        {showCustomerChrome && <DineBot />}
+        {showDineBot && <DineBot />}
         {showCustomerChrome && <BottomNav />}
       </div>
     </LoginModalProvider>

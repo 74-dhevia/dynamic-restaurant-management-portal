@@ -373,6 +373,47 @@ export function queryAskZestro(query, context = {}) {
   const lower = query.toLowerCase().trim();
   const { foods = FOODS, restaurants = RESTAURANTS, orders = [], userLocation = 'Kovilpatti' } = context;
 
+  // 0A. Tamil & Tanglish Greetings and Conversational Intents
+  if (/^(vanakkam|hi|hello|hey|namaste|hlo|mapla|bro|thala)\b/i.test(lower)) {
+    const popularDishes = foods.filter(f => f.isBestseller).slice(0, 3);
+    return {
+      text: "Vanakkam! 🙏 Naan dhaan ZESTRO AI Butler. Inaiku ungalukku enna saapada pidikkum? Biryani, Hot Parotta, illa Healthy Veg Combo-va? Enkitta voice or chat moolama sollunga!",
+      items: popularDishes,
+      actions: [
+        { label: "🌙 Late-Night Biryani", action: "OPEN_MOOD", mood: "late-night" },
+        { label: "💰 Under ₹250 Budget", action: "OPEN_MOOD", mood: "budget-beast" },
+        { label: "🍽️ Book a Table", action: "NAVIGATE", url: "/book-table" },
+      ],
+    };
+  }
+
+  // 0B. Tamil & Tanglish Direct Food Cravings (e.g. "biryani venum", "saapada sollu", "parotta kudu", "dosa iruka")
+  if (/venum|saapada|sapda|kudu|iruka|paaru|edhavadhu|solla/i.test(lower)) {
+    const matchedFoods = foods.filter(f => {
+      const fn = f.name.toLowerCase();
+      const fc = (f.category || '').toLowerCase();
+      return (lower.includes('biryani') && fn.includes('biryani')) ||
+             (lower.includes('parotta') && fn.includes('parotta')) ||
+             (lower.includes('dosa') && fn.includes('dosa')) ||
+             (lower.includes('chicken') && fn.includes('chicken')) ||
+             (lower.includes('paneer') && fn.includes('paneer')) ||
+             (lower.includes('halwa') && fn.includes('halwa')) ||
+             lower.includes(fn) || lower.includes(fc);
+    });
+
+    if (matchedFoods.length > 0) {
+      const topPicks = matchedFoods.slice(0, 3);
+      return {
+        text: `Kandippa! Ungalukku pidicha freshly prepared authentic dishes list inga irukku. Direct-ah "Add to Cart" panni order pannalaam:`,
+        items: topPicks,
+        actions: [
+          { label: "⚡ Add Top Pick to Cart", action: "ADD_COMBO_TO_CART", data: [topPicks[0]] },
+          { label: "Browse Full Menu", action: "NAVIGATE", url: "/menu" },
+        ],
+      };
+    }
+  }
+
   // 0. AI Mood & Combo Craving Handler (Voice or Chip input)
   const moodPatterns = [
     { key: 'late-night', title: 'Late-Night Munchies Combo', test: /late night|midnight|craving|night/i, words: ['biryani', 'chicken', 'parotta', 'gravy'], emoji: '🌙' },
