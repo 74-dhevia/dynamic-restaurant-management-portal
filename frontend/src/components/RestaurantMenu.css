@@ -1,0 +1,1470 @@
+/* ==========================================================================
+   ZESTRO REAL RESTAURANT MENU EXPERIENCE STYLES
+   Modern, authentic, responsive food-ordering platform aesthetics.
+   ========================================================================== */
+
+.rest-menu-page {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 0 100px;
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: var(--font-family-user);
+}
+
+/* --------------------------------------------------------------------------
+   1. RESTAURANT HERO & COVER BANNER
+   -------------------------------------------------------------------------- */
+.rest-hero-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+}
+
+.rest-cover-wrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: #1a1614;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .rest-cover-wrapper {
+    height: 200px;
+  }
+}
+
+.rest-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rest-hero-card:hover .rest-cover-img {
+  transform: scale(1.02);
+}
+
+.rest-cover-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.rest-cover-badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  z-index: 2;
+}
+
+.rest-cover-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+}
+
+.rest-cover-status.open {
+  background: rgba(46, 158, 91, 0.92);
+}
+
+.rest-cover-status.closed {
+  background: rgba(214, 69, 69, 0.92);
+}
+
+.rest-cover-status.temp {
+  background: rgba(235, 140, 32, 0.92);
+}
+
+.rest-cover-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.rest-action-round-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(20, 16, 14, 0.7);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rest-action-round-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.rest-action-round-btn.wished {
+  background: #ffffff;
+  color: #e63946;
+}
+
+/* Floating overlay on banner for desktop title */
+.rest-cover-content-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  right: 20px;
+  z-index: 2;
+  color: #ffffff;
+}
+
+.rest-title-name {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 600px) {
+  .rest-title-name {
+    font-size: 22px;
+  }
+}
+
+.rest-cuisines-line {
+  font-size: 14px;
+  opacity: 0.92;
+  margin: 0 0 4px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.rest-header-details-body {
+  padding: 20px 24px;
+}
+
+.rest-primary-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.rest-action-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rest-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.rest-btn-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.rest-btn-pill.primary {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px rgba(232, 84, 42, 0.35);
+}
+
+.rest-btn-pill.primary:hover {
+  background: #d64520;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(232, 84, 42, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   2. RESTAURANT COMPACT INFORMATION
+   -------------------------------------------------------------------------- */
+.rest-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.rest-info-tile {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.rest-info-tile:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
+.rest-info-tile-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-elevated));
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.rest-info-tile-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.rest-info-tile-val {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.rest-info-tile-lbl {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Delivery location bar */
+.rest-delivering-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+  border-radius: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+.rest-delivering-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rest-delivering-change-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 800;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.rest-delivering-change-btn:hover {
+  text-decoration: underline;
+}
+
+/* Warning banners for closed/busy */
+.rest-status-alert-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-top: 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.rest-status-alert-banner.closed {
+  background: rgba(214, 69, 69, 0.1);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.rest-status-alert-banner.temp {
+  background: rgba(235, 140, 32, 0.1);
+  border: 1px solid #eb8c20;
+  color: #eb8c20;
+}
+
+/* --------------------------------------------------------------------------
+   3. OFFERS SECTION
+   -------------------------------------------------------------------------- */
+.rest-offers-wrap {
+  margin: 20px 0;
+}
+
+.rest-section-mini-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin: 0 0 10px 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rest-offers-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: thin;
+}
+
+.rest-offer-card {
+  flex: 0 0 250px;
+  background: var(--bg-elevated);
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.rest-offer-card:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg-elevated));
+  transform: translateY(-2px);
+}
+
+.rest-offer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rest-offer-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.rest-offer-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.rest-offer-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rest-offer-btn {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.rest-offer-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   4. SEARCH IN MENU & DIETARY CONTROLS
+   -------------------------------------------------------------------------- */
+.rest-menu-controls-bar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 18px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.rest-menu-search-box {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 8px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rest-menu-search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.rest-menu-search-input {
+  border: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.rest-dietary-pills {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rest-diet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rest-diet-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.rest-diet-btn.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.rest-diet-btn.active.veg {
+  background: rgba(46, 158, 91, 0.15);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.rest-diet-btn.active.nonveg {
+  background: rgba(214, 69, 69, 0.15);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+   5. HORIZONTAL STICKY CATEGORY NAVIGATION
+   -------------------------------------------------------------------------- */
+.rest-sticky-nav-container {
+  position: sticky;
+  top: 58px;
+  z-index: 35;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  transition: top 0.2s ease;
+}
+
+.rest-category-tabs-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 4px;
+}
+
+.rest-category-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.rest-cat-tab-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.rest-cat-tab-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--bg-elevated));
+}
+
+.rest-cat-tab-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(232, 84, 42, 0.3);
+  transform: translateY(-1px);
+}
+
+.rest-cat-badge-count {
+  font-size: 11px;
+  opacity: 0.85;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.rest-cat-tab-btn.active .rest-cat-badge-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   6. MENU SECTIONS & FOOD ITEM DESIGN (REAL RESTAURANT STYLE)
+   -------------------------------------------------------------------------- */
+.rest-menu-section {
+  margin-bottom: 32px;
+  scroll-margin-top: 130px;
+}
+
+.rest-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.rest-section-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.rest-section-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rest-section-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Food items list */
+.rest-food-items-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+  gap: 16px;
+}
+
+.rest-food-item-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  transition: all 0.22s ease;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.rest-food-item-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+.rest-food-item-card.unavailable {
+  opacity: 0.65;
+}
+
+/* Left Content Area */
+.rest-food-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.rest-food-header-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.rest-food-name {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.rest-food-name:hover {
+  color: var(--accent);
+}
+
+.rest-badge-bestseller {
+  background: #ffb703;
+  color: #382400;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+}
+
+.rest-badge-spicy {
+  background: rgba(214, 69, 69, 0.15);
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.rest-food-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.rest-food-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.rest-food-old-price {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.rest-food-discount-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--success);
+  background: rgba(46, 158, 91, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.rest-food-rating-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--success);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.rest-food-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0 0 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rest-food-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.rest-food-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* Right Image & Action Area */
+.rest-food-visual {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .rest-food-item-card {
+    padding: 14px;
+    gap: 14px;
+  }
+  .rest-food-visual {
+    width: 115px;
+  }
+}
+
+.rest-food-img-frame {
+  width: 100%;
+  height: 115px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.rest-food-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.rest-food-item-card:hover .rest-food-thumb-img {
+  transform: scale(1.05);
+}
+
+.rest-food-btn-wrap {
+  margin-top: -18px;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ADD BUTTON */
+.rest-add-btn {
+  background: #ffffff;
+  color: var(--success);
+  border: 1.5px solid var(--success);
+  border-radius: 8px;
+  padding: 6px 20px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.18s ease;
+  min-width: 90px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.rest-add-btn:hover:not(:disabled) {
+  background: var(--success);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(46, 158, 91, 0.3);
+}
+
+.rest-add-btn:disabled {
+  opacity: 0.6;
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* STEPPER CONTROLS [ - qty + ] */
+.rest-qty-stepper {
+  background: var(--success);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(46, 158, 91, 0.3);
+  min-width: 96px;
+}
+
+.rest-qty-step-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.rest-qty-step-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.rest-qty-num {
+  font-size: 14px;
+  font-weight: 800;
+  min-width: 18px;
+  text-align: center;
+}
+
+.rest-customisable-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   7. POPULAR AT THIS RESTAURANT SECTION
+   -------------------------------------------------------------------------- */
+.rest-popular-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 650px) {
+  .rest-popular-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. FLOATING BOTTOM CART BAR
+   -------------------------------------------------------------------------- */
+.rest-floating-cart-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 760px;
+  z-index: 80;
+  background: linear-gradient(135deg, #1b1614 0%, #291e18 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  animation: slideUpFloat 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  backdrop-filter: blur(12px);
+}
+
+@keyframes slideUpFloat {
+  from {
+    transform: translate(-50%, 60px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.rest-floating-cart-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rest-floating-cart-icon-bubble {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(232, 84, 42, 0.4);
+}
+
+.rest-floating-cart-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.rest-floating-cart-qty {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.rest-floating-cart-total {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffb703;
+}
+
+.rest-floating-cart-btn {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(232, 84, 42, 0.4);
+}
+
+.rest-floating-cart-btn:hover {
+  background: #d64520;
+  transform: translateX(2px);
+}
+
+/* --------------------------------------------------------------------------
+   9. MODALS: FOOD DETAILS, CUSTOMIZATION, TABLE BOOKING, CONFLICT
+   -------------------------------------------------------------------------- */
+.rest-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.rest-modal-container {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: scaleIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rest-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.rest-modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.85);
+  transform: scale(1.08);
+}
+
+.rest-modal-hero-img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  display: block;
+}
+
+.rest-modal-body {
+  padding: 22px 24px;
+}
+
+.rest-modal-section-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 18px 0 10px;
+}
+
+/* Customization choices */
+.rest-choice-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rest-choice-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-size: 14px;
+}
+
+.rest-choice-label:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+}
+
+.rest-choice-label.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  font-weight: 700;
+}
+
+.rest-choice-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rest-choice-price {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 13.5px;
+}
+
+/* Instructions textarea */
+.rest-instructions-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13.5px;
+  resize: vertical;
+  min-height: 65px;
+  box-sizing: border-box;
+}
+
+.rest-instructions-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* Modal Bottom Action Bar */
+.rest-modal-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.rest-modal-cta-btn {
+  flex: 1;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(232, 84, 42, 0.35);
+}
+
+.rest-modal-cta-btn:hover {
+  background: #d64520;
+  transform: translateY(-1px);
+}
+
+/* Table Booking Modal Specific */
+.rest-booking-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.rest-booking-pill-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.rest-booking-pill-btn:hover {
+  border-color: var(--accent);
+}
+
+.rest-booking-pill-btn.selected {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.rest-booking-summary-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 13.5px;
+}
+
+/* --------------------------------------------------------------------------
+   10. REVIEWS & RATINGS DISTRIBUTION
+   -------------------------------------------------------------------------- */
+.rest-reviews-container {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 36px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.rest-reviews-summary-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+@media (max-width: 680px) {
+  .rest-reviews-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+.rest-overall-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.rest-overall-score-num {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.rest-stars-row {
+  color: #ffb703;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.rest-rating-dist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rest-dist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.rest-dist-bar-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.rest-dist-bar-fill {
+  height: 100%;
+  background: #ffb703;
+  border-radius: 4px;
+}
+
+/* Individual review card */
+.rest-review-card {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rest-review-card:last-child {
+  border-bottom: none;
+}
+
+.rest-review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rest-review-author {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.rest-review-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(46, 158, 91, 0.12);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.rest-review-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.rest-review-dish-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.rest-review-comment {
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.45;
+  margin: 4px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   11. RECENTLY VIEWED & RECOMMENDATIONS
+   -------------------------------------------------------------------------- */
+.rest-horizontal-cards-row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 2px 14px;
+  scrollbar-width: thin;
+}
+
+.rest-compact-dish-card {
+  flex: 0 0 200px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.rest-compact-dish-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.rest-compact-img-wrap {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rest-compact-card-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.rest-compact-card-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.rest-compact-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   12. SKELETON LOADERS
+   -------------------------------------------------------------------------- */
+.rest-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--border) 0%,
+    color-mix(in srgb, var(--border) 50%, var(--bg-elevated)) 50%,
+    var(--border) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.rest-skeleton-banner {
+  width: 100%;
+  height: 260px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.rest-skeleton-row {
+  height: 18px;
+  margin-bottom: 8px;
+}
+
+.rest-skeleton-card {
+  height: 140px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}

@@ -1,0 +1,1066 @@
+/* ==========================================================================
+   ZESTRO FULL-SCREEN SINGLE-PAGE FLIPPING RESTAURANT MENU
+   100vw x 100vh immersive slate chalkboard, 3D single-page turns & real photography
+   ========================================================================== */
+
+/* Fullscreen Viewport Shell */
+.fs-menu-viewport {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #18110b radial-gradient(circle at 50% 35%, #2a1910 0%, #140b06 80%, #0c0603 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+}
+
+/* Ambient wooden tabletop props on edges */
+.fs-menu-prop {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85));
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.prop-left-dish {
+  top: 15%;
+  left: -40px;
+  width: 180px;
+  transform: rotate(-15deg);
+}
+
+.prop-right-dish {
+  top: 20%;
+  right: -30px;
+  width: 170px;
+  transform: rotate(12deg);
+}
+
+.prop-bottom-dish {
+  bottom: 20px;
+  right: -20px;
+  width: 190px;
+  transform: rotate(-8deg);
+}
+
+.prop-bottom-left {
+  bottom: 30px;
+  left: -25px;
+  width: 160px;
+  transform: rotate(10deg);
+}
+
+@media (max-width: 1200px) {
+  .fs-menu-prop {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   1. TOP CONTROL BAR
+   -------------------------------------------------------------------------- */
+.fs-menu-topbar {
+  width: 100%;
+  max-width: 1400px;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.fs-menu-brand-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fs-back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.fs-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-2px);
+}
+
+/* Home button (Requirement 24) */
+.fs-home-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.fs-home-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.fs-rest-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-rest-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #f7d171;
+  letter-spacing: 0.5px;
+}
+
+.fs-rest-sub {
+  font-size: 11.5px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Category Filter Tabs in Topbar (Requirement 18) */
+.fs-category-nav {
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  padding: 4px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow-x: auto;
+  max-width: 580px;
+  scrollbar-width: none;
+}
+
+.fs-category-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.fs-cat-tab {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 13px;
+  border-radius: 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fs-cat-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fs-cat-tab.active {
+  background: #e8542a;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(232, 84, 42, 0.4);
+}
+
+.fs-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fs-action-pill {
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.fs-wishlist-pill {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fs-wishlist-pill.active {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.fs-book-pill {
+  background: #e52525;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(229, 37, 37, 0.45);
+}
+
+.fs-book-pill:hover {
+  background: #f03333;
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   2. 3D FLIPPING SINGLE-PAGE STAGE (Requirement 4, 5, 8, 26, 27)
+   -------------------------------------------------------------------------- */
+.fs-menu-stage {
+  flex: 1;
+  width: 100%;
+  max-width: 1360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2500px;
+  position: relative;
+  z-index: 5;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.fs-single-page-card {
+  width: 100%;
+  height: calc(100vh - 140px);
+  max-height: 840px;
+  background: #121214;
+  background-image: 
+    radial-gradient(ellipse at 15% 15%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 85%, rgba(0, 0, 0, 0.6) 0%, transparent 70%),
+    linear-gradient(180deg, #161619 0%, #101012 100%);
+  border: 4px solid #242220;
+  outline: 1.5px solid rgba(255, 255, 255, 0.08);
+  outline-offset: -3px;
+  border-radius: 20px;
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.9),
+    inset 0 0 80px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  padding: 22px 28px;
+  box-sizing: border-box;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+/* Single-page Turn Animations (Realistic 3D Page Turn - Requirement 8) */
+.turn-forward {
+  animation: singlePageFlipLeft 0.52s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  transform-origin: left center;
+}
+
+.turn-backward {
+  animation: singlePageFlipRight 0.52s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  transform-origin: right center;
+}
+
+@keyframes singlePageFlipLeft {
+  0% {
+    transform: perspective(2500px) rotateY(0deg) scale(1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    filter: brightness(1);
+  }
+  45% {
+    transform: perspective(2500px) rotateY(-40deg) skewY(-2deg) scale(0.96) translateX(-40px);
+    box-shadow: -40px 25px 50px rgba(0, 0, 0, 0.7);
+    filter: brightness(0.85);
+  }
+  50% {
+    opacity: 0.15;
+    transform: perspective(2500px) rotateY(-88deg) skewY(-3deg) scale(0.94);
+  }
+  55% {
+    opacity: 0.2;
+    transform: perspective(2500px) rotateY(40deg) skewY(2deg) scale(0.96) translateX(40px);
+    filter: brightness(0.85);
+  }
+  100% {
+    transform: perspective(2500px) rotateY(0deg) scale(1) translateX(0);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+@keyframes singlePageFlipRight {
+  0% {
+    transform: perspective(2500px) rotateY(0deg) scale(1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    filter: brightness(1);
+  }
+  45% {
+    transform: perspective(2500px) rotateY(40deg) skewY(2deg) scale(0.96) translateX(40px);
+    box-shadow: 40px 25px 50px rgba(0, 0, 0, 0.7);
+    filter: brightness(0.85);
+  }
+  50% {
+    opacity: 0.15;
+    transform: perspective(2500px) rotateY(88deg) skewY(3deg) scale(0.94);
+  }
+  55% {
+    opacity: 0.2;
+    transform: perspective(2500px) rotateY(-40deg) skewY(-2deg) scale(0.96) translateX(-40px);
+    filter: brightness(0.85);
+  }
+  100% {
+    transform: perspective(2500px) rotateY(0deg) scale(1) translateX(0);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+/* Page Corner Flourishes */
+.fs-corner-flourish {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 16px;
+  pointer-events: none;
+}
+.flourish-tl { top: 12px; left: 14px; }
+.flourish-tr { top: 12px; right: 14px; }
+.flourish-bl { bottom: 12px; left: 14px; }
+.flourish-br { bottom: 12px; right: 14px; }
+
+/* --------------------------------------------------------------------------
+   3. PAGE 1: COVER PAGE STYLES (Requirement 6)
+   -------------------------------------------------------------------------- */
+.fs-cover-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  gap: 16px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.fs-cover-header {
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.fs-cover-crest {
+  font-size: 11.5px;
+  letter-spacing: 2.5px;
+  font-weight: 800;
+  color: #f7d171;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.fs-cover-cuisine {
+  color: #cbd5e1;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 6px 0 0;
+  font-weight: 600;
+}
+
+.fs-cover-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.fs-cover-hero-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 270px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+}
+
+.fs-cover-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fs-cover-hero-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fs-cover-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fs-cover-intro-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  border-radius: 14px;
+}
+
+.fs-cover-subtitle {
+  margin: 0 0 6px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #f7d171;
+  font-weight: 800;
+}
+
+.fs-cover-text {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.fs-cover-meta-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fs-meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #e2e8f0;
+}
+
+.fs-cover-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.fs-cover-explore-btn {
+  flex: 1.2;
+  background: linear-gradient(135deg, #e52525, #be1212);
+  color: #ffffff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 24px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 20px rgba(229, 37, 37, 0.4);
+  transition: all 0.2s ease;
+}
+
+.fs-cover-explore-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(229, 37, 37, 0.6);
+}
+
+.fs-cover-reserve-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 24px;
+  font-weight: 800;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fs-cover-reserve-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.fs-cover-highlights-ribbon {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fs-hl-banner-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #f7d171;
+  text-align: center;
+}
+
+.fs-hl-items-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.fs-hl-item-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fs-hl-item-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.fs-hl-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.fs-hl-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fs-hl-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.fs-hl-price {
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffdf78;
+}
+
+/* --------------------------------------------------------------------------
+   4. PAGES 2..N: DEDICATED MENU PAGES (Requirement 9, 10)
+   -------------------------------------------------------------------------- */
+.fs-menu-content-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.fs-page-header {
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.fs-cursive-title {
+  font-family: 'Brush Script MT', 'Segoe Script', cursive, sans-serif;
+  font-size: 34px;
+  color: #ffdf78;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 223, 120, 0.2);
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.fs-menu-stamp {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: #ffffff;
+  margin: 2px 0 0;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.fs-header-subtitle {
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.fs-header-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 12px;
+}
+
+.fs-header-line::before,
+.fs-header-line::after {
+  content: '';
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+}
+
+/* Multi-column Category Sections */
+.fs-page-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.fs-page-body::-webkit-scrollbar {
+  width: 5px;
+}
+.fs-page-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.fs-menu-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Red Ribbon Banner matching reference image (Requirement 9) */
+.fs-ribbon-banner {
+  background: linear-gradient(90deg, #be1212 0%, #e52525 50%, #be1212 100%);
+  color: #ffffff;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(190, 18, 18, 0.4);
+  margin-bottom: 12px;
+  clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);
+}
+
+/* Large Authentic Food Photography (Requirement 11) */
+.fs-photo-card {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.fs-photo-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85);
+}
+
+.fs-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fs-photo-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffc107;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.fs-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  padding: 16px 10px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Dish Item Rows */
+.fs-dish-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fs-dish-row {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.fs-dish-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.fs-dish-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.fs-dish-name {
+  color: #f1f5f9;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.fs-dish-name:hover {
+  color: #ffdf78;
+}
+
+.fs-dot-leader {
+  flex: 1;
+  border-bottom: 1.5px dotted rgba(255, 255, 255, 0.25);
+  margin: 0 4px;
+  height: 1px;
+}
+
+.fs-dish-price {
+  color: #ffdf78;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.fs-dish-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.35;
+  margin-top: 2px;
+  padding-left: 14px;
+}
+
+/* Stepper / Add button on dish row */
+.fs-add-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.fs-add-btn:hover {
+  background: #e8542a;
+  border-color: #e8542a;
+  transform: scale(1.05);
+}
+
+.fs-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: #e8542a;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.fs-stepper button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.fs-stepper button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.fs-stepper span {
+  min-width: 16px;
+  text-align: center;
+}
+
+/* Today's Special Box (Requirement 10) */
+.fs-special-card {
+  margin-top: 14px;
+  background: rgba(229, 37, 37, 0.08);
+  border: 1px solid rgba(229, 37, 37, 0.35);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fs-special-card:hover {
+  background: rgba(229, 37, 37, 0.15);
+  border-color: #e52525;
+}
+
+.fs-special-tag {
+  font-size: 10.5px;
+  font-weight: 900;
+  color: #f87171;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.fs-special-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fs-special-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.fs-special-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #ffffff;
+}
+
+.fs-special-price {
+  color: #ffdf78;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.fs-page-printed-footer {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. BOTTOM NAVIGATION BAR (Previous / Counter / Next)
+   -------------------------------------------------------------------------- */
+.fs-menu-bottombar {
+  width: 100%;
+  max-width: 1400px;
+  padding: 10px 24px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.fs-nav-flipper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(20, 16, 13, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 6px 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  margin: 0 auto;
+}
+
+.fs-flip-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.fs-flip-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.fs-flip-btn:not(:disabled):hover {
+  background: #e8542a;
+  border-color: #e8542a;
+  transform: scale(1.04);
+}
+
+.fs-page-counter {
+  color: #ffdf78;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.fs-keys-hint {
+  color: #94a3b8;
+  font-size: 11.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   6. FLOATING CART PILL (Requirement 20)
+   -------------------------------------------------------------------------- */
+.fs-floating-cart-pill {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  background: linear-gradient(135deg, #e8542a, #f72585);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(232, 84, 42, 0.55);
+  cursor: pointer;
+  z-index: 10001;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fs-floating-cart-pill:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(232, 84, 42, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   7. RESPONSIVE BREAKPOINTS (Requirement 29)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .fs-page-body {
+    grid-template-columns: 1fr;
+  }
+  .fs-cover-body {
+    grid-template-columns: 1fr;
+  }
+  .fs-cover-hero-wrap {
+    height: 200px;
+  }
+  .fs-category-nav {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fs-single-page-card {
+    height: calc(100vh - 145px);
+    padding: 14px 16px;
+  }
+  .fs-menu-topbar {
+    padding: 8px 12px;
+  }
+  .fs-category-nav {
+    display: none;
+  }
+  .fs-cursive-title {
+    font-size: 26px;
+  }
+  .fs-menu-stamp {
+    font-size: 20px;
+  }
+  .fs-keys-hint {
+    display: none;
+  }
+  .fs-cover-hero-wrap {
+    height: 160px;
+  }
+  .fs-hl-items-row {
+    grid-template-columns: 1fr;
+  }
+}
