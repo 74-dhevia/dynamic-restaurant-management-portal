@@ -202,35 +202,42 @@ export function parseVoiceCommand(transcript, availableFoods = FOODS) {
   const raw = transcript.trim();
   const lower = raw.toLowerCase();
 
-  // Number words mapping
+  // Number words mapping (English + Tamil Tanglish)
   const numWords = {
     one: 1, a: 1, an: 1, two: 2, three: 3, four: 4, five: 5,
     six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+    // Tamil / Tanglish numbers
+    oru: 1, onnu: 1, ondru: 1,
+    rendu: 2, irandu: 2,
+    moonu: 3, moondru: 3,
+    naalu: 4, naangu: 4,
+    anju: 5, ainthu: 5,
+    aaru: 6, ezhu: 7, ettu: 8, ombathu: 9, pathu: 10,
   };
 
   // Check intent types
-  if (/show (veg|vegetarian)|pure veg/.test(lower)) {
+  if (/show (veg|vegetarian)|pure veg|veg items/.test(lower)) {
     return { intent: 'FILTER_DIETARY', preference: 'Vegetarian', message: 'Showing vegetarian food options.' };
   }
-  if (/find dessert|show dessert|sweets/.test(lower)) {
+  if (/find dessert|show dessert|sweets|halwa/.test(lower)) {
     return { intent: 'FILTER_CATEGORY', category: 'desserts', message: 'Displaying desserts and sweets.' };
   }
-  if (/restaurants? near me|nearby restaurants?/.test(lower)) {
+  if (/restaurants? near me|nearby restaurants?|hotel enga/.test(lower)) {
     return { intent: 'NAVIGATE_RESTAURANTS', message: 'Showing restaurants in your area.' };
   }
-  if (/view cart|open cart|show my cart/.test(lower)) {
+  if (/view cart|open cart|show my cart|cart kaatu/.test(lower)) {
     return { intent: 'NAVIGATE_CART', message: 'Opening your cart.' };
   }
 
   // Parse dish ordering intent
   const detectedItems = [];
-  const segments = lower.split(/,| and |\+/);
+  const segments = lower.split(/,| and |\+| kooda /);
 
   segments.forEach(seg => {
     let clean = seg.trim();
     let qty = 1;
 
-    // Detect quantity
+    // Detect quantity digits (e.g. "2 biryani")
     const digitMatch = clean.match(/\b(\d+)\b/);
     if (digitMatch) {
       qty = parseInt(digitMatch[1], 10);
@@ -246,9 +253,9 @@ export function parseVoiceCommand(transcript, availableFoods = FOODS) {
       }
     }
 
-    // Clean filler phrases
+    // Clean English & Tanglish filler phrases
     clean = clean
-      .replace(/\b(i want|add|order|please|give me|can i have|get me|of|plates?|portions?)\b/gi, '')
+      .replace(/\b(i want|add to cart|add|order|please|give me|can i have|get me|of|plates?|portions?|add pannu|cart la podu|cart la|order pannu|venum|kudu|podu|parcel|vechu|kudunga|eduthuko|pack)\b/gi, '')
       .trim();
 
     if (!clean) return;
