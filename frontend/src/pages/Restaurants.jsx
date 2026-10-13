@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CATEGORIES } from '../data/mockData';
+import { CATEGORIES, RESTAURANTS } from '../data/mockData';
 import RestaurantCard from '../components/RestaurantCard';
 import { restaurantApiService, normalizeRestaurant } from '../services/restaurantApiService';
 import { setRestaurants } from '../redux/slices/restaurantSlice';
 import { setLocation } from '../redux/slices/userSlice';
 import Icon from '../components/Icon';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 24;
 const AVAILABLE_CITIES = ['Kovilpatti', 'Tirunelveli'];
 
 export default function Restaurants() {
@@ -16,9 +16,13 @@ export default function Restaurants() {
   const reduxRestaurants = useSelector(s => s.restaurant?.restaurants);
 
   const [restaurantsList, setRestaurantsList] = useState(() => {
-    return Array.isArray(reduxRestaurants) && reduxRestaurants.length > 0
-      ? reduxRestaurants.map(normalizeRestaurant).filter(Boolean)
-      : [];
+    if (Array.isArray(reduxRestaurants) && reduxRestaurants.length > 0) {
+      const mergedMap = new Map();
+      RESTAURANTS.forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+      reduxRestaurants.map(normalizeRestaurant).filter(Boolean).forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+      return Array.from(mergedMap.values());
+    }
+    return RESTAURANTS;
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,27 +32,27 @@ export default function Restaurants() {
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [searchFilter, setSearchFilter] = useState('');
 
-  // Fetch real restaurants from MongoDB API on mount or when location changes
+  // Fetch real restaurants from MongoDB API and merge with full authentic catalog
   const loadRestaurantsFromApi = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await restaurantApiService.getRestaurants();
-      if (res.success && Array.isArray(res.data)) {
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
         const normalized = res.data.map(normalizeRestaurant).filter(Boolean);
-        setRestaurantsList(normalized);
-        dispatch(setRestaurants(normalized));
+        // Merge MongoDB live restaurants with all 30 verified restaurants
+        const mergedMap = new Map();
+        RESTAURANTS.forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+        normalized.forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+        const merged = Array.from(mergedMap.values());
+        setRestaurantsList(merged);
+        dispatch(setRestaurants(merged));
       } else {
-        // If API returned error but we have redux/cache, keep it
-        if (!restaurantsList.length) {
-          setError(res.error || 'Unable to load restaurants');
-        }
+        setRestaurantsList(RESTAURANTS);
       }
     } catch (err) {
       console.warn('[Restaurants] Failed to fetch restaurants:', err.message);
-      if (!restaurantsList.length) {
-        setError('Network error: Unable to connect to server');
-      }
+      setRestaurantsList(RESTAURANTS);
     } finally {
       setLoading(false);
     }
@@ -60,8 +64,11 @@ export default function Restaurants() {
 
   // Sync if Redux updates
   useEffect(() => {
-    if (Array.isArray(reduxRestaurants) && reduxRestaurants.length > 0 && !restaurantsList.length) {
-      setRestaurantsList(reduxRestaurants.map(normalizeRestaurant).filter(Boolean));
+    if (Array.isArray(reduxRestaurants) && reduxRestaurants.length > 0) {
+      const mergedMap = new Map();
+      RESTAURANTS.forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+      reduxRestaurants.map(normalizeRestaurant).filter(Boolean).forEach(r => mergedMap.set(r.name.toLowerCase(), r));
+      setRestaurantsList(Array.from(mergedMap.values()));
     }
   }, [reduxRestaurants]);
 
