@@ -207,6 +207,7 @@ export const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        restaurantId: user.restaurantId || (user.role === 'restaurantManager' ? '6ac50ca5ea2b67bd7b4a00ed' : null),
       },
       token,
     });
@@ -234,6 +235,7 @@ export const getMe = async (req, res) => {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
+        restaurantId: user.restaurantId || (user.role === 'restaurantManager' ? '6ac50ca5ea2b67bd7b4a00ed' : null),
         profileImage: user.profileImage || null,
       },
     });
@@ -241,6 +243,59 @@ export const getMe = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || 'Server error fetching user profile',
+    });
+  }
+};
+
+/**
+ * @desc    Change password
+ * @route   PUT /api/auth/change-password
+ * @access  Private (JWT protected)
+ */
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password and new password are required',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long',
+      });
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: 'Incorrect current password',
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password changed successfully',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to update password',
     });
   }
 };
@@ -1155,6 +1210,29 @@ export const googleAuth = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || 'Server error during Google authentication',
+    });
+  }
+};
+
+/**
+ * @desc    Permanently delete authenticated user account
+ * @route   DELETE /api/auth/account
+ * @access  Private (JWT protected)
+ */
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Your ZESTRO account and personal data have been permanently deleted.',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete account',
+      error: error.message,
     });
   }
 };

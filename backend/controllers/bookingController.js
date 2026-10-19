@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import TableBooking from '../models/TableBooking.js';
 import Restaurant from '../models/Restaurant.js';
 import Waitlist from '../models/Waitlist.js';
@@ -891,13 +892,39 @@ export const confirmBooking = async (req, res) => {
 };
 
 /**
- * @desc    Admin: Get all table bookings
+ * @desc    Admin / Manager: Get all table bookings with filters
  * @route   GET /api/bookings
  * @access  Admin / Manager
  */
 export const getAllBookings = async (req, res) => {
   try {
-    const bookings = await TableBooking.find().sort({ bookingDate: -1, createdAt: -1 });
+    const filter = {};
+    const { restaurantId, status, date } = req.query;
+
+    if (restaurantId && restaurantId !== 'all') {
+      if (typeof restaurantId === 'string' && restaurantId.match(/^[0-9a-fA-F]{24}$/)) {
+        filter.$or = [
+          { restaurantId: restaurantId },
+          { restaurantId: new mongoose.Types.ObjectId(restaurantId) },
+        ];
+      } else {
+        filter.restaurantId = restaurantId;
+      }
+    }
+
+    if (status && status !== 'all') {
+      filter.status = status;
+    }
+
+    if (date === 'today') {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      const end = new Date();
+      end.setHours(23, 59, 59, 999);
+      filter.bookingDate = { $gte: start, $lte: end };
+    }
+
+    const bookings = await TableBooking.find(filter).sort({ bookingDate: -1, createdAt: -1 });
     res.status(200).json({
       success: true,
       count: bookings.length,
@@ -907,6 +934,50 @@ export const getAllBookings = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch all bookings',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * @desc    Admin / Manager: Update booking status (Confirm, Cancel, Complete, CheckedIn, etc.)
+ * @route   PATCH /api/bookings/:id/status
+ * @access  Admin / Manager
+ */
+export const updateBookingStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, rejectionReason } = req.body;
+
+    const booking = await TableBooking.findOne({
+      $or: [{ _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : null }, { bookingNumber: id }],
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+
+    if (status) {
+      booking.status = status;
+    }
+    if (rejectionReason) {
+      booking.rejectionReason = rejectionReason;
+    }
+
+    await booking.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Booking status updated to ${booking.status}`,
+      data: booking,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update booking status',
       error: error.message,
     });
   }

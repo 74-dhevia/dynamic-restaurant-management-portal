@@ -16,6 +16,8 @@ import {
   updateEmailPreferences,
   unsubscribeEmail,
   googleAuth,
+  changePassword,
+  deleteAccount,
 } from '../controllers/authController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 
@@ -45,6 +47,8 @@ router.get('/unsubscribe', unsubscribeEmail);
 // Private routes (JWT protected)
 router.get('/me', protect, getMe);
 router.put('/profile', protect, updateProfile);
+router.put('/change-password', protect, changePassword);
+router.delete('/account', protect, deleteAccount);
 
 // Section 10: Customer Email Preferences (JWT protected)
 router.get('/email-preferences', protect, getEmailPreferences);

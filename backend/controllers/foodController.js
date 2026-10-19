@@ -8,14 +8,18 @@ import Category from '../models/Category.js';
  */
 export const getFoodItems = async (req, res) => {
   try {
-    const { category, restaurantId, isVeg, isBestseller, search, sort } = req.query;
-    const filter = { isAvailable: true };
+    const { category, restaurantId, isVeg, isBestseller, search, sort, includeUnavailable, all } = req.query;
+    const filter = {};
 
-    if (category) {
+    if (includeUnavailable !== 'true' && all !== 'true') {
+      filter.isAvailable = true;
+    }
+
+    if (category && category !== 'All') {
       filter.category = { $regex: new RegExp(`^${category}$`, 'i') };
     }
 
-    if (restaurantId) {
+    if (restaurantId && restaurantId !== 'all') {
       filter.restaurantId = restaurantId;
     }
 

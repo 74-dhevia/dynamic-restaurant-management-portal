@@ -13,7 +13,7 @@ const reviewSchema = new mongoose.Schema(
     },
     userAvatar: String,
     restaurantId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Mixed,
       ref: 'Restaurant',
     },
     foodItemId: {
@@ -35,6 +35,11 @@ const reviewSchema = new mongoose.Schema(
     isVerifiedPurchase: {
       type: Boolean,
       default: true,
+    },
+    managerReply: {
+      comment: String,
+      repliedAt: Date,
+      repliedBy: String,
     },
   },
   { timestamps: true }

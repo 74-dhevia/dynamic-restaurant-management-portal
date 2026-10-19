@@ -27,7 +27,7 @@ const defaultUsers = [
     role: 'chef',
   },
   {
-    name: 'Karthik Raman (Manager)',
+    name: 'Dheiva (Manager)',
     email: 'manager@zestro.com',
     phone: '+91 98940 11223',
     password: 'Manager@123',

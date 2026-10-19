@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Review from '../models/Review.js';
 import Restaurant from '../models/Restaurant.js';
 import FoodItem from '../models/FoodItem.js';
@@ -69,7 +70,17 @@ export const createReview = async (req, res) => {
  */
 export const getRestaurantReviews = async (req, res) => {
   try {
-    const reviews = await Review.find({ restaurantId: req.params.restaurantId }).sort({ createdAt: -1 });
+    const restId = req.params.restaurantId;
+    let query = { restaurantId: restId };
+    if (mongoose.Types.ObjectId.isValid(restId)) {
+      query = {
+        $or: [
+          { restaurantId: restId },
+          { restaurantId: new mongoose.Types.ObjectId(restId) },
+        ],
+      };
+    }
+    const reviews = await Review.find(query).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -108,8 +119,56 @@ export const getFoodReviews = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Restaurant Manager / Admin reply to a customer review
+ * @route   POST /api/reviews/:id/reply
+ * @access  Private (Manager / Admin)
+ */
+export const replyToReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { comment } = req.body;
+
+    if (!comment || comment.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Reply comment is required',
+      });
+    }
+
+    const review = await Review.findById(id);
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found',
+      });
+    }
+
+    review.managerReply = {
+      comment: comment.trim(),
+      repliedAt: new Date(),
+      repliedBy: req.user?.name || 'Restaurant Manager',
+    };
+
+    await review.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Reply submitted successfully',
+      data: review,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit reply',
+      error: error.message,
+    });
+  }
+};
+
 export default {
   createReview,
   getRestaurantReviews,
   getFoodReviews,
+  replyToReview,
 };

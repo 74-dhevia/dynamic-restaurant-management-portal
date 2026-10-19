@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Order from '../models/Order.js';
 import Bill from '../models/Bill.js';
 import { sendOrderEventEmail } from '../services/emailService.js';
@@ -51,6 +52,7 @@ export const createOrder = async (req, res) => {
       paymentStatus: paymentMethod === 'COD' ? 'Pending' : 'Completed',
       orderStatus: 'Placed',
       estimatedDeliveryTime: '30-40 mins',
+      restaurantId: req.body.restaurantId || items[0]?.restaurantId || '6ac50ca5ea2b67bd7b4a00ed',
       notes,
     });
 
@@ -339,7 +341,14 @@ export const getAllOrders = async (req, res) => {
     }
 
     if (restaurantId && restaurantId !== 'all') {
-      filter.restaurantId = restaurantId;
+      if (mongoose.Types.ObjectId.isValid(restaurantId)) {
+        filter.$or = [
+          { restaurantId: String(restaurantId) },
+          { restaurantId: new mongoose.Types.ObjectId(restaurantId) },
+        ];
+      } else {
+        filter.restaurantId = restaurantId;
+      }
     }
 
     const orders = await Order.find(filter).sort({ createdAt: -1 });

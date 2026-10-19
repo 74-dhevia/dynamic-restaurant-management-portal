@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       enum: ['customer', 'admin', 'chef', 'restaurantManager', 'deliveryPartner'],
       default: 'customer',
     },
+    restaurantId: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
     profileImage: {
       type: String,
       default: '',

@@ -11,6 +11,7 @@ import {
   confirmBooking,
   getAllBookings,
   verifyCheckInPin,
+  updateBookingStatus,
 } from '../controllers/bookingController.js';
 import { protect, optionalProtect } from '../middleware/authMiddleware.js';
 
@@ -30,6 +31,7 @@ router.patch('/:id/reschedule', optionalProtect, rescheduleBooking);
 
 // Host / Admin Management Routes
 router.patch('/:id/confirm', protect, confirmBooking);
+router.patch('/:id/status', protect, updateBookingStatus);
 router.get('/', protect, getAllBookings);
 router.post('/verify-pin', protect, verifyCheckInPin);
 

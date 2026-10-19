@@ -215,10 +215,123 @@ export const deleteRestaurant = async (req, res) => {
   }
 };
 
+// Staff registry state for restaurant operations
+let restaurantStaffRegistry = [
+  {
+    id: 'st_1',
+    name: 'Chef Murugesan P.',
+    email: 'chef@zestro.com',
+    phone: '+91 98421 88901',
+    role: 'Executive Chef',
+    station: 'Main Wok & Biriyani Hearth',
+    shift: 'Morning & Evening (11 AM - 10 PM)',
+    status: 'On Duty',
+  },
+  {
+    id: 'st_2',
+    name: 'Suresh Kumar',
+    email: 'delivery@zestro.com',
+    phone: '+91 97890 55443',
+    role: 'Delivery Fleet Lead',
+    station: 'Doorstep Express Dispatch',
+    shift: 'Full Shift (12 PM - 11 PM)',
+    status: 'On Duty',
+  },
+  {
+    id: 'st_3',
+    name: 'Chef S. Meenakshi Sundaram',
+    email: 'meenakshi.chef@zestro.com',
+    phone: '+91 97890 12340',
+    role: 'Tiffin & Breakfast Chef',
+    station: 'Traditional Tiffin Hearth',
+    shift: 'Morning Shift (7 AM - 3 PM)',
+    status: 'On Duty',
+  },
+  {
+    id: 'st_4',
+    name: 'David Raj',
+    email: 'david.chef@zestro.com',
+    phone: '+91 96231 99012',
+    role: 'Line Chef & Grills',
+    station: 'Tandoor & Starters',
+    shift: 'Evening Shift (4 PM - 11 PM)',
+    status: 'On Break',
+  },
+  {
+    id: 'st_5',
+    name: 'Venkatesh R.',
+    email: 'venkatesh.floor@zestro.com',
+    phone: '+91 94431 88771',
+    role: 'Head Captain / Table Host',
+    station: 'AC & Family Dining Hall',
+    shift: 'Full Day (11 AM - 10:30 PM)',
+    status: 'On Duty',
+  },
+];
+
+/**
+ * @desc    Get restaurant staff and shift assignments
+ * @route   GET /api/restaurants/:id/staff
+ * @access  Private (Manager / Admin)
+ */
+export const getRestaurantStaff = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      count: restaurantStaffRegistry.length,
+      data: restaurantStaffRegistry,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve restaurant staff',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * @desc    Update staff status or shift assignment
+ * @route   PATCH /api/restaurants/:id/staff/:staffId
+ * @access  Private (Manager / Admin)
+ */
+export const updateRestaurantStaff = async (req, res) => {
+  try {
+    const { staffId } = req.params;
+    const { status, station, shift } = req.body;
+
+    const staffIndex = restaurantStaffRegistry.findIndex((s) => s.id === staffId);
+    if (staffIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Staff member not found',
+      });
+    }
+
+    if (status) restaurantStaffRegistry[staffIndex].status = status;
+    if (station) restaurantStaffRegistry[staffIndex].station = station;
+    if (shift) restaurantStaffRegistry[staffIndex].shift = shift;
+
+    res.status(200).json({
+      success: true,
+      message: 'Staff assignment updated successfully',
+      data: restaurantStaffRegistry[staffIndex],
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update staff assignment',
+      error: error.message,
+    });
+  }
+};
+
 export default {
   getRestaurants,
   getRestaurantById,
   createRestaurant,
   updateRestaurant,
   deleteRestaurant,
+  getRestaurantStaff,
+  updateRestaurantStaff,
 };

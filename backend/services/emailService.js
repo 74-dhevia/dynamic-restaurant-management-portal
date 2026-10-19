@@ -618,9 +618,9 @@ export const sendBookingEventEmail = async ({ to, name = 'Customer', booking, ev
       message: 'Your table reservation request has been submitted to the restaurant. We will notify you once confirmed by the host.',
     },
     Confirmed: {
-      subject: 'Your ZESTRO Table Reservation is Confirmed',
+      subject: `Your booking is confirmed! Verify OTP: ${booking.checkInPin || ''}`,
       heading: 'Table Reservation Confirmed! 🥂',
-      message: 'Your table has been reserved! Please present your 4-digit check-in PIN to the restaurant host upon arrival.',
+      message: `Your booking is confirmed! Your verify OTP is ${booking.checkInPin || ''}. Please present this PIN to the restaurant host upon arrival.`,
     },
     Rescheduled: {
       subject: 'Your ZESTRO Table Reservation Has Been Rescheduled',
